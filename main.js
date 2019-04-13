@@ -1,13 +1,11 @@
 var count = 0;
+var quote;
+var imgs;
+var loadedImgs;
+var drawnImgs
 
 createCanv();
 main();
-
-var
-    quote,
-    imgs,
-    loadedImgs,
-    drawnImgs;
 
 function main() {
     quote = null;
@@ -25,12 +23,11 @@ function main() {
 }
 
 function createCanv() {
-    var
-        canvas = document.createElement('canvas'),
-        body = document.getElementById('body'),
-        download = document.createElement('button'),
-        next = document.createElement('button'),
-        block = document.createElement('div');
+    var canvas = document.createElement('canvas');
+    var body = document.getElementById('body';
+    var download = document.createElement('button');
+    var next = document.createElement('button');
+    var block = document.createElement('div');
 
     block.style.width = '100%';
     block.style.display = 'flex';
@@ -143,17 +140,15 @@ function getQuote() {
 }
 
 function cutQuote(context, text, x, y, maxWidth, lineHeight) {
-    var
-        words = text.split(" "),
-        nWords = words.length,
-        nRows = Math.floor(context.measureText(text).width / 550),
-        line = "";
+	var words = text.split(" ");
+    var nWords = words.length;
+    var nRows = Math.floor(context.measureText(text).width / 550);
+    var line = "";
 
     y -= nRows * (lineHeight / 2);
     for (var n = 0; n < nWords; n++) {
-        var
-            aprxLine = line + words[n] + " ",
-            aprxWidth = context.measureText(aprxLine).width;
+        var aprxLine = line + words[n] + " ";
+        var aprxWidth = context.measureText(aprxLine).width;
 
         if (aprxWidth > maxWidth) {
             context.fillText(line, x, y);
@@ -174,8 +169,8 @@ function drawQuote() {
         context.fillStyle = 'azure';
         context.font = '22pt Comic Sans MS';
         context.textAlign = 'center';
-        var x = canvas.width / 2,
-            y = canvas.height / 2 + 11;
+        var x = canvas.width / 2;
+        var y = canvas.height / 2 + 11;
 
         cutQuote(context, quote, x, y, 550, 35);
     }
