@@ -24,7 +24,7 @@ function main() {
 
 function createCanv() {
     var canvas = document.createElement('canvas');
-    var body = document.getElementById('body';
+    var body = document.getElementById('body');
     var download = document.createElement('button');
     var next = document.createElement('button');
     var block = document.createElement('div');
