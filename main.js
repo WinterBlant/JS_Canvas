@@ -2,7 +2,6 @@ var count = 0;
 var quote;
 var imgs;
 var loadedImgs;
-var drawnImgs
 
 createCanv();
 main();
@@ -12,14 +11,13 @@ function main() {
     imgs = new Array();
     loadedImgs = 0;
     drawnImgs = 0;
+	download.style.visibility = 'hidden';
+	next.style.visibility = 'hidden';
     for (var i = 0; i < 4; i++) {
         imgs[i] = new Image();
         imgs[i].crossOrigin = 'anonymous';
     }
     getPctrs();
-    processPics();
-    getQuote();
-    drawQuote();
 }
 
 function createCanv() {
@@ -28,6 +26,7 @@ function createCanv() {
     var download = document.createElement('button');
     var next = document.createElement('button');
     var block = document.createElement('div');
+	var btnblock = document.createElement('div');
 
     block.style.width = '100%';
     block.style.display = 'flex';
@@ -58,14 +57,16 @@ function createCanv() {
     next.innerHTML = 'Next';
     next.style.backgroundColor = 'yellow';
     next.style.fontSize = '16px';
-    next.style.padding = '5px';
+    next.style.padding = '10px';
+	next.style.margin = '20px';
     next.onclick =
         function () {
             main();
         }
     block.appendChild(canvas);
-    block.appendChild(download);
-    block.appendChild(next);
+	block.appendChild(btnblock);
+    btnblock.appendChild(download);
+    btnblock.appendChild(next);
     body.appendChild(block);
 }
 
@@ -84,13 +85,15 @@ function getPctrs() {
                     imgs[i].src = data[i].urls.small;
                     imgs[i].onload = function () {
                         loadedImgs++;
+						if (loadedImgs == 4) {
+							processPics();
+							}
                     };
                 }
             })
 }
 
 function processPics() {
-    if (loadedImgs == 4) {
         var
             x = 0,
             y = 0,
@@ -113,19 +116,16 @@ function processPics() {
 
         context.fillStyle = 'rgba(0,0,0,0.4)';
         context.fillRect(0, 0, 600, 600);
-    } else {
-        setTimeout(processPics, 1);
-    }
+		getQuote();
 }
 
 function drawIMG(img, sx, sy, swidth, sheight, x, y, width, height) {
     var ctx = canvas.getContext('2d');
 
     ctx.drawImage(img, sx, sy, swidth, sheight, x, y, width, height);
-    drawnImgs++;
 }
 
-function getQuote() {
+async function getQuote() {
     var http = new XMLHttpRequest;
 
     http.open('GET', 'https://cors-anywhere.herokuapp.com/' +
@@ -135,6 +135,7 @@ function getQuote() {
         if (this.readyState == 4 && this.status == 200) {
             console.log(http.responseText);
             quote = JSON.parse(http.responseText)['quoteText'];
+			drawQuote();
         }
     }
 }
@@ -163,7 +164,6 @@ function cutQuote(context, text, x, y, maxWidth, lineHeight) {
 }
 
 function drawQuote() {
-    if (quote != null && drawnImgs == 4) {
         var context = canvas.getContext('2d');
 
         context.fillStyle = 'azure';
@@ -173,8 +173,6 @@ function drawQuote() {
         var y = canvas.height / 2 + 11;
 
         cutQuote(context, quote, x, y, 550, 35);
-    }
-    else {
-        setTimeout(drawQuote, 1);
-    }
+		download.style.visibility = 'visible';
+		next.style.visibility = 'visible';
 }
